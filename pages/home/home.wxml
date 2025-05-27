@@ -1,0 +1,29 @@
+<view class="container">
+  <view class="header">
+    <text class="welcome">欢迎使用智膳视界</text>
+    <text class="subtitle">您的智能营养管家</text>
+  </view>
+  
+  <view class="grid-container">
+    <block wx:for="{{healthMetrics}}" wx:key="id">
+      <view class="grid-item">
+        <view class="metric-card">
+          <view class="metric-content">
+            <text class="metric-title">{{item.title}}</text>
+            <text class="metric-value">{{item.value}}</text>
+            <text class="metric-unit">{{item.unit}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="quick-actions">
+    <button class="action-button" bindtap="goToAnalyze">
+      拍照分析
+    </button>
+    <button class="action-button" bindtap="goToProfile">
+      健康档案
+    </button>
+  </view>
+</view> 

@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="camera-section">
+    <view class="preview-container" wx:if="{{tempImagePath}}">
+      <image class="preview-image" src="{{tempImagePath}}" mode="aspectFit"></image>
+      <view class="preview-actions">
+        <button class="action-button" bindtap="retakePhoto">重新拍摄</button>
+        <button class="action-button primary" bindtap="analyzePhoto">开始分析</button>
+      </view>
+    </view>
+    <view class="camera-container" wx:else>
+      <camera device-position="back" flash="auto" binderror="error" class="camera">
+        <cover-view class="camera-guide">
+          <cover-view class="guide-text">请将食物放在取景框内</cover-view>
+        </cover-view>
+      </camera>
+      <view class="camera-controls">
+        <button class="capture-button" bindtap="takePhoto">
+          <view class="capture-button-inner"></view>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-section" wx:if="{{analysisResult}}">
+    <view class="result-header">
+      <text class="result-title">分析结果</text>
+    </view>
+    <view class="result-content">
+      <view class="result-item" wx:for="{{analysisResult}}" wx:key="name">
+        <text class="item-name">{{item.name}}</text>
+        <view class="item-details">
+          <text class="item-value">{{item.value}}</text>
+          <text class="item-unit">{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 
