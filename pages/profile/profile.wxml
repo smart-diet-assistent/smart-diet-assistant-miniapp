@@ -1,66 +1,131 @@
 <view class="container">
   <view class="header">
     <view class="avatar-section">
-      <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" bindtap="goToSettings">
         <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
       </button>
       <text class="nickname">{{userInfo.nickName || '点击设置头像'}}</text>
     </view>
   </view>
 
+  <!-- 热量分析卡片区 -->
+  <view class="daily-summary">
+    <text class="summary-title">热量分析</text>
+    <view class="summary-content">
+      <text>今日摄入：{{todayCalories}} kcal</text>
+      <text>目标：{{targetCalories}} kcal</text>
+    </view>
+  </view>
+
+  <!-- 六项营养素卡片区 -->
+  <view class="metrics-grid">
+    <block wx:for="{{healthMetrics}}" wx:key="id">
+      <view class="metric-card">
+        <text class="metric-title">{{item.title}}</text>
+        <text class="metric-value">{{item.value}}</text>
+        <text class="metric-unit">{{item.unit}}</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 今日食物 -->
+  <view class="section food-section">
+    <view class="section-title">今日食物</view>
+    <view class="food-list">
+      <block wx:if="{{todayFoods.length > 0}}">
+        <block wx:for="{{todayFoods}}" wx:key="id">
+          <view class="food-item">
+            <view class="food-info">
+              <text class="food-name">{{item.name}}</text>
+              <text class="food-time">{{item.time}}</text>
+            </view>
+            <view class="food-details">
+              <text class="food-amount">{{item.amount}}{{item.unit}}</text>
+              <text class="food-calories">{{item.calories}}千卡</text>
+            </view>
+          </view>
+        </block>
+      </block>
+      <view wx:else class="empty-state">
+        <text>今天还没有记录食物哦</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐食物 -->
+  <view class="section recommend-section">
+    <view class="section-title">推荐食物</view>
+    <view class="food-list">
+      <block wx:if="{{recommendedFoods.length > 0}}">
+        <block wx:for="{{recommendedFoods}}" wx:key="id">
+          <view class="food-item recommend-item">
+            <view class="food-info">
+              <text class="food-name">{{item.name}}</text>
+              <text class="food-desc">{{item.description}}</text>
+            </view>
+            <view class="food-tags">
+              <text wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag" class="food-tag">{{tag}}</text>
+            </view>
+          </view>
+        </block>
+      </block>
+      <view wx:else class="empty-state">
+        <text>暂无推荐食物</text>
+      </view>
+    </view>
+  </view>
+
   <view class="content">
     <view class="section">
-      <view class="section-title">基本信息</view>
-      <view class="form-group">
-        <view class="form-item">
-          <text class="label">昵称</text>
-          <input type="nickname" class="input" placeholder="请输入昵称" value="{{userInfo.nickName}}" bindchange="onNicknameChange"/>
-        </view>
-        <view class="form-item">
-          <text class="label">性别</text>
-          <picker bindchange="onGenderChange" value="{{userInfo.gender}}" range="{{genderArray}}">
-            <view class="picker">{{genderArray[userInfo.gender]}}</view>
-          </picker>
-        </view>
-        <view class="form-item">
-          <text class="label">年龄</text>
-          <input type="number" class="input" placeholder="请输入年龄" value="{{userInfo.age}}" bindchange="onAgeChange"/>
-        </view>
+      <view class="section-title" bindtap="toggleProfileInfo">
+        基本信息
+        <text class="arrow">{{showProfileInfo ? '▲' : '▼'}}</text>
       </view>
-    </view>
-
-    <view class="section">
-      <view class="section-title">健康信息</view>
-      <view class="form-group">
-        <view class="form-item">
-          <text class="label">身高(cm)</text>
-          <input type="digit" class="input" placeholder="请输入身高" value="{{healthInfo.height}}" bindchange="onHeightChange"/>
+      <view wx:if="{{showProfileInfo}}">
+        <!-- 合并三块信息 -->
+        <view class="form-group">
+          <view class="form-item">
+            <text class="label">昵称</text>
+            <input type="nickname" class="input" placeholder="请输入昵称" value="{{userInfo.nickName}}" bindchange="onNicknameChange"/>
+          </view>
+          <view class="form-item">
+            <text class="label">性别</text>
+            <picker bindchange="onGenderChange" value="{{userInfo.gender}}" range="{{genderArray}}">
+              <view class="picker">{{genderArray[userInfo.gender]}}</view>
+            </picker>
+          </view>
+          <view class="form-item">
+            <text class="label">年龄</text>
+            <input type="number" class="input" placeholder="请输入年龄" value="{{userInfo.age}}" bindchange="onAgeChange"/>
+          </view>
         </view>
-        <view class="form-item">
-          <text class="label">体重(kg)</text>
-          <input type="digit" class="input" placeholder="请输入体重" value="{{healthInfo.weight}}" bindchange="onWeightChange"/>
+        <view class="form-group">
+          <view class="form-item">
+            <text class="label">身高(cm)</text>
+            <input type="digit" class="input" placeholder="请输入身高" value="{{healthInfo.height}}" bindchange="onHeightChange"/>
+          </view>
+          <view class="form-item">
+            <text class="label">体重(kg)</text>
+            <input type="digit" class="input" placeholder="请输入体重" value="{{healthInfo.weight}}" bindchange="onWeightChange"/>
+          </view>
+          <view class="form-item">
+            <text class="label">运动频率</text>
+            <picker bindchange="onActivityLevelChange" value="{{healthInfo.activityLevel}}" range="{{activityLevels}}">
+              <view class="picker">{{activityLevels[healthInfo.activityLevel]}}</view>
+            </picker>
+          </view>
         </view>
-        <view class="form-item">
-          <text class="label">运动频率</text>
-          <picker bindchange="onActivityLevelChange" value="{{healthInfo.activityLevel}}" range="{{activityLevels}}">
-            <view class="picker">{{activityLevels[healthInfo.activityLevel]}}</view>
-          </picker>
-        </view>
-      </view>
-    </view>
-
-    <view class="section">
-      <view class="section-title">饮食偏好</view>
-      <view class="form-group">
-        <view class="form-item">
-          <text class="label">饮食习惯</text>
-          <picker bindchange="onDietTypeChange" value="{{healthInfo.dietType}}" range="{{dietTypes}}">
-            <view class="picker">{{dietTypes[healthInfo.dietType]}}</view>
-          </picker>
-        </view>
-        <view class="form-item">
-          <text class="label">过敏原</text>
-          <input class="input" placeholder="请输入过敏原" value="{{healthInfo.allergies}}" bindchange="onAllergiesChange"/>
+        <view class="form-group">
+          <view class="form-item">
+            <text class="label">饮食习惯</text>
+            <picker bindchange="onDietTypeChange" value="{{healthInfo.dietType}}" range="{{dietTypes}}">
+              <view class="picker">{{dietTypes[healthInfo.dietType]}}</view>
+            </picker>
+          </view>
+          <view class="form-item">
+            <text class="label">过敏原</text>
+            <input class="input" placeholder="请输入过敏原" value="{{healthInfo.allergies}}" bindchange="onAllergiesChange"/>
+          </view>
         </view>
       </view>
     </view>

@@ -5,9 +5,9 @@
 }
 
 .header {
-  background: #1AAD19;
+  background: #fff;
   padding: 60rpx 30rpx;
-  color: #fff;
+  color: #222;
 }
 
 .avatar-section {
@@ -57,6 +57,15 @@
   font-weight: bold;
   color: #333;
   margin-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.arrow {
+  font-size: 28rpx;
+  color: #999;
+  margin-left: 16rpx;
 }
 
 .form-group {
@@ -114,4 +123,54 @@
 
 .save-button::after {
   border: none;
+}
+
+.metrics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 24rpx 0 32rpx 0;
+}
+
+.metric-card {
+  width: 48%;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+  padding: 24rpx 0;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.metric-title {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.metric-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #222;
+  margin-right: 4rpx;
+}
+
+.metric-unit {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.daily-summary {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
 } 

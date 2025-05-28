@@ -1,20 +1,38 @@
 <view class="container">
   <view class="header">
-    <text class="welcome">欢迎使用智膳视界</text>
-    <text class="subtitle">您的智能营养管家</text>
-  </view>
-  
-  <!-- 今日食物 -->
-  <view class="section">
-    <text class="section-title">今日食物</text>
-    <view class="food-list">
-      <block wx:for="{{todayFoods}}" wx:key="id">
-        <view class="food-item">
-          <text class="food-name">{{item.name}}</text>
-          <text class="food-amount">{{item.amount}}{{item.unit}}</text>
-        </view>
-      </block>
+    <view class="assistant-profile">
+      <image class="assistant-avatar" src="{{assistantAvatar}}" mode="aspectFill"></image>
+      <view class="assistant-info">
+        <text class="assistant-name">{{assistantName}}</text>
+        <text class="assistant-role">您的智能营养管家</text>
+      </view>
     </view>
+  </view>
+
+  <!-- 恢复热量分析 daily-summary 区域 -->
+  <view class="daily-summary">
+    <text class="summary-title">热量分析</text>
+    <view class="summary-content">
+      <text>今日摄入：{{todayCalories}} kcal</text>
+      <text>目标：{{targetCalories}} kcal</text>
+    </view>
+  </view>
+
+  <view class="chat-container">
+    <view class="assistant-message">
+      <image class="message-avatar" src="{{assistantAvatar}}" mode="aspectFill"></image>
+      <view class="message-content">
+        <text class="message-text">您好！{{userName}}，今天也要保持健康饮食哦~</text>
+      </view>
+    </view>
+    <block wx:for="{{chatMessages}}" wx:key="index">
+      <view class="assistant-message">
+        <image class="message-avatar" src="{{assistantAvatar}}" mode="aspectFill"></image>
+        <view class="message-content">
+          <text class="message-text">{{item}}</text>
+        </view>
+      </view>
+    </block>
   </view>
 
   <view class="grid-container">
@@ -31,25 +49,85 @@
     </block>
   </view>
 
-  <!-- 推荐食物 -->
-  <view class="section">
-    <text class="section-title">推荐食物</text>
-    <view class="food-list">
-      <block wx:for="{{recommendedFoods}}" wx:key="id">
-        <view class="food-item">
-          <text class="food-name">{{item.name}}</text>
-          <text class="food-desc">{{item.description}}</text>
-        </view>
-      </block>
-    </view>
+  <view wx:if="{{isLoading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
   </view>
 
-  <view class="quick-actions">
-    <button class="action-button" bindtap="goToAnalyze">
-      拍照分析
-    </button>
-    <button class="action-button" bindtap="goToProfile">
-      健康档案
-    </button>
-  </view>
+  <block wx:else>
+    <!-- 今日食物 -->
+    <view class="section food-section">
+      <view class="section-header">
+        <text class="section-title">今日食物</text>
+        <text class="section-subtitle">记录您的每一餐</text>
+      </view>
+      <view class="food-list">
+        <block wx:if="{{todayFoods.length > 0}}">
+          <block wx:for="{{todayFoods}}" wx:key="id">
+            <view class="food-item">
+              <view class="food-info">
+                <text class="food-name">{{item.name}}</text>
+                <text class="food-time">{{item.time}}</text>
+              </view>
+              <view class="food-details">
+                <text class="food-amount">{{item.amount}}{{item.unit}}</text>
+                <text class="food-calories">{{item.calories}}千卡</text>
+              </view>
+            </view>
+          </block>
+        </block>
+        <view wx:else class="empty-state">
+          <text>今天还没有记录食物哦</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 推荐食物 -->
+    <view class="section recommend-section">
+      <view class="section-header">
+        <text class="section-title">推荐食物</text>
+        <text class="section-subtitle">根据您的需求推荐</text>
+      </view>
+      <view class="food-list">
+        <block wx:if="{{recommendedFoods.length > 0}}">
+          <block wx:for="{{recommendedFoods}}" wx:key="id">
+            <view class="food-item recommend-item">
+              <view class="food-info">
+                <text class="food-name">{{item.name}}</text>
+                <text class="food-desc">{{item.description}}</text>
+              </view>
+              <view class="food-tags">
+                <text wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag" class="food-tag">{{tag}}</text>
+              </view>
+            </view>
+          </block>
+        </block>
+        <view wx:else class="empty-state">
+          <text>暂无推荐食物</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 新的操作按钮区域 -->
+    <view class="quick-actions">
+      <button class="action-button" bindtap="showSummaryDialog">
+        营养总结
+      </button>
+      <button class="action-button" bindtap="showPlanDialog">
+        制定计划
+      </button>
+    </view>
+
+    <!-- 弹窗和进度条区域（后续实现） -->
+    <view wx:if="{{showDialog}}" class="dialog-mask">
+      <view class="dialog-box">
+        <text class="dialog-title">请选择天数</text>
+        <slider min="1" max="30" step="1" value="{{selectedDays}}" show-value bindchange="onSliderChange" />
+        <view class="dialog-actions">
+          <button class="dialog-btn" bindtap="onDialogConfirm">确定</button>
+          <button class="dialog-btn" bindtap="onDialogCancel">取消</button>
+        </view>
+      </view>
+    </view>
+  </block>
 </view> 

@@ -1,0 +1,41 @@
+<view class="container">
+  <view class="header">
+    <text class="title">个性化设置</text>
+    <text class="subtitle">定制您的专属营养管家</text>
+  </view>
+
+  <view class="settings-form">
+    <view class="form-item">
+      <text class="label">您的名字</text>
+      <input class="input" type="text" placeholder="请输入您的名字" value="{{userName}}" bindinput="onUserNameInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">管家名字</text>
+      <input class="input" type="text" placeholder="请输入管家的名字" value="{{assistantName}}" bindinput="onAssistantNameInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">管家头像</text>
+      <view class="avatar-grid">
+        <view class="avatar-item {{selectedAvatar === index ? 'selected' : ''}}" 
+              wx:for="{{avatars}}" 
+              wx:key="index"
+              bindtap="onSelectAvatar"
+              data-index="{{index}}">
+          <image src="{{item}}" mode="aspectFill"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="preview">
+    <text class="preview-title">预览</text>
+    <view class="preview-content">
+      <image class="preview-avatar" src="{{selectedAvatarPath}}" mode="aspectFill"></image>
+      <text class="preview-name">{{assistantName || '小膳'}}</text>
+    </view>
+  </view>
+
+  <button class="save-button" bindtap="saveSettings">保存设置</button>
+</view> 

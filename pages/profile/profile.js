@@ -17,11 +17,18 @@ Page({
     },
     genderArray: ['未设置', '男', '女'],
     activityLevels: ['几乎不运动', '轻度运动', '中度运动', '重度运动'],
-    dietTypes: ['无特殊要求', '素食主义', '生酮饮食', '地中海饮食', '低碳水饮食']
+    dietTypes: ['无特殊要求', '素食主义', '生酮饮食', '地中海饮食', '低碳水饮食'],
+    healthMetrics: [],
+    todayFoods: [],
+    recommendedFoods: [],
+    showProfileInfo: false,
+    todayCalories: 0,
+    targetCalories: 2000
   },
 
   onLoad() {
     this.loadUserProfile()
+    this.loadAllData()
   },
 
   loadUserProfile() {
@@ -32,6 +39,62 @@ Page({
         userInfo: { ...this.data.userInfo, ...userProfile.userInfo },
         healthInfo: { ...this.data.healthInfo, ...userProfile.healthInfo }
       })
+    }
+  },
+
+  loadAllData() {
+    Promise.all([
+      this.loadHealthMetrics(),
+      this.loadTodayFoods(),
+      this.loadRecommendedFoods()
+    ])
+  },
+
+  async loadHealthMetrics() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'getHealthMetrics'
+      })
+      if (res.result && res.result.data) {
+        this.setData({
+          healthMetrics: res.result.data
+        })
+      }
+    } catch (error) {
+      wx.showToast({ title: '获取健康指标失败', icon: 'none' })
+    }
+  },
+
+  async loadTodayFoods() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'getTodayFoods'
+      })
+      if (res.result && res.result.data) {
+        const foods = res.result.data
+        const totalCalories = foods.reduce((sum, food) => sum + (food.calories || 0), 0)
+        this.setData({
+          todayFoods: foods,
+          todayCalories: totalCalories
+        })
+      }
+    } catch (error) {
+      wx.showToast({ title: '获取今日食物失败', icon: 'none' })
+    }
+  },
+
+  async loadRecommendedFoods() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'getRecommendedFoods'
+      })
+      if (res.result && res.result.data) {
+        this.setData({
+          recommendedFoods: res.result.data
+        })
+      }
+    } catch (error) {
+      wx.showToast({ title: '获取推荐食物失败', icon: 'none' })
     }
   },
 
@@ -104,5 +167,13 @@ Page({
       title: '保存成功',
       icon: 'success'
     })
+  },
+
+  goToSettings() {
+    wx.navigateTo({ url: '/pages/settings/settings' })
+  },
+
+  toggleProfileInfo() {
+    this.setData({ showProfileInfo: !this.data.showProfileInfo })
   }
 }) 
