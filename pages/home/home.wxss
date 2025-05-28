@@ -1,25 +1,165 @@
 .container {
   padding: 20rpx;
   background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
 .header {
-  padding: 30rpx 0;
+  padding: 40rpx 0;
   text-align: center;
+  background: linear-gradient(135deg, #1AAD19, #2ecc71);
+  margin: -20rpx -20rpx 20rpx -20rpx;
+  border-radius: 0 0 30rpx 30rpx;
 }
 
 .welcome {
-  font-size: 36rpx;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+  display: block;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 10rpx;
+  display: block;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #1AAD19;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.section {
+  width: 100%;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
   font-weight: bold;
   color: #333;
   display: block;
 }
 
-.subtitle {
+.section-subtitle {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.food-list {
+  width: 100%;
+}
+
+.food-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.food-item:last-child {
+  border-bottom: none;
+}
+
+.food-info {
+  flex: 1;
+}
+
+.food-name {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.food-time {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.food-details {
+  text-align: right;
+}
+
+.food-amount {
   font-size: 28rpx;
   color: #666;
-  margin-top: 10rpx;
   display: block;
+}
+
+.food-calories {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.food-desc {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.food-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12rpx;
+}
+
+.food-tag {
+  font-size: 22rpx;
+  color: #1AAD19;
+  background: rgba(26, 173, 25, 0.1);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-right: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999;
+  font-size: 28rpx;
 }
 
 .grid-container {
@@ -36,12 +176,9 @@
 
 .metric-card {
   background: #ffffff;
-  border-radius: 16rpx;
-  padding: 20rpx;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
 }
 
 .metric-icon {
@@ -62,12 +199,12 @@
 .metric-title {
   font-size: 28rpx;
   color: #666;
-  margin-bottom: 8rpx;
+  margin-bottom: 16rpx;
   display: block;
 }
 
 .metric-value {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: bold;
   color: #333;
   margin-right: 8rpx;
@@ -78,26 +215,43 @@
   color: #999;
 }
 
+.metric-progress {
+  margin-top: 16rpx;
+  height: 6rpx;
+  background: #f5f5f5;
+  border-radius: 3rpx;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #1AAD19;
+  border-radius: 3rpx;
+  transition: width 0.3s ease;
+}
+
 .quick-actions {
   display: flex;
   justify-content: space-around;
-  margin-top: 30rpx;
+  margin-top: 40rpx;
   padding: 0 30rpx;
 }
 
 .action-button {
-  background: #1AAD19;
+  background: linear-gradient(135deg, #1AAD19, #2ecc71);
   color: #fff;
   border-radius: 40rpx;
   font-size: 28rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20rpx 40rpx;
+  padding: 24rpx 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(26, 173, 25, 0.2);
+  border: none;
 }
 
 .action-button image {
   width: 40rpx;
   height: 40rpx;
-  margin-right: 10rpx;
+  margin-right: 12rpx;
 } 

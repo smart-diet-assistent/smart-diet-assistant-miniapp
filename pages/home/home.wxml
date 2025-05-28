@@ -4,6 +4,19 @@
     <text class="subtitle">您的智能营养管家</text>
   </view>
   
+  <!-- 今日食物 -->
+  <view class="section">
+    <text class="section-title">今日食物</text>
+    <view class="food-list">
+      <block wx:for="{{todayFoods}}" wx:key="id">
+        <view class="food-item">
+          <text class="food-name">{{item.name}}</text>
+          <text class="food-amount">{{item.amount}}{{item.unit}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
   <view class="grid-container">
     <block wx:for="{{healthMetrics}}" wx:key="id">
       <view class="grid-item">
@@ -16,6 +29,19 @@
         </view>
       </view>
     </block>
+  </view>
+
+  <!-- 推荐食物 -->
+  <view class="section">
+    <text class="section-title">推荐食物</text>
+    <view class="food-list">
+      <block wx:for="{{recommendedFoods}}" wx:key="id">
+        <view class="food-item">
+          <text class="food-name">{{item.name}}</text>
+          <text class="food-desc">{{item.description}}</text>
+        </view>
+      </block>
+    </view>
   </view>
 
   <view class="quick-actions">

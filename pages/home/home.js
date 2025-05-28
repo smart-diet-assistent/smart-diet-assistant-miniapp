@@ -1,5 +1,25 @@
 Page({
   data: {
+    todayFoods: [
+      {
+        id: 1,
+        name: '早餐',
+        amount: '0',
+        unit: '份'
+      },
+      {
+        id: 2,
+        name: '午餐',
+        amount: '0',
+        unit: '份'
+      },
+      {
+        id: 3,
+        name: '晚餐',
+        amount: '0',
+        unit: '份'
+      }
+    ],
     healthMetrics: [
       {
         id: 1,
@@ -37,12 +57,31 @@ Page({
         value: '0',
         unit: 'g'
       }
+    ],
+    recommendedFoods: [
+      {
+        id: 1,
+        name: '新鲜水果',
+        description: '富含维生素和膳食纤维'
+      },
+      {
+        id: 2,
+        name: '全谷物',
+        description: '提供优质碳水化合物'
+      },
+      {
+        id: 3,
+        name: '瘦肉',
+        description: '优质蛋白质来源'
+      }
     ]
   },
 
   onLoad() {
     console.log('页面加载完成')
     this.loadHealthMetrics()
+    this.loadTodayFoods()
+    this.loadRecommendedFoods()
   },
 
   loadHealthMetrics() {
@@ -50,6 +89,22 @@ Page({
     // 先使用静态数据
     this.setData({
       healthMetrics: this.data.healthMetrics
+    })
+  },
+
+  loadTodayFoods() {
+    console.log('加载今日食物数据')
+    // 先使用静态数据
+    this.setData({
+      todayFoods: this.data.todayFoods
+    })
+  },
+
+  loadRecommendedFoods() {
+    console.log('加载推荐食物数据')
+    // 先使用静态数据
+    this.setData({
+      recommendedFoods: this.data.recommendedFoods
     })
   },
 
